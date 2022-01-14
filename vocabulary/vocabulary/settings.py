@@ -91,7 +91,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'vocabulary',
-        'USER': 'postgres',
+        'USER': 'brian',
         'PASSWORD': 'SuperSecretPassword',
         'HOST': 'localhost',
         'PORT': '5432',
