@@ -1,0 +1,159 @@
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryan's Dictionary | Login</title>
+
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap-5.0.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/boxicons-2.1.1/css/boxicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/fontawesome-6.0.0/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/fontawesome-6.0.0/css/all.css' %}">
+
+    <link rel="stylesheet" href="{% static 'customs/authentication/css/master.css' %}">
+    <link rel="stylesheet" href="{% static 'customs/css/buttons.css' %}">
+</head>
+<body>
+    <div class="sign-up-form-container">
+        <div class="col-md-4 col-sm-4 col-xs-4"></div>
+        <div class="col-md-4 col-sm-6 col-xs-6 justify-content-center sign-up-form-box">
+            <h5 class="text-center">Brian's Dictionary</h5>
+            <div class="" id="login-alert" role="alert"></div>
+            <div class="login-form">
+                
+                    <div class="row mb-2 justify-content-center">
+                        <input id="username" class="form-control form-control-sm" type="text" placeholder="Username" required>
+                        <div id="username-validation" class="invalid-feedback"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <input id="password" class="form-control form-control-sm" type="password" placeholder="Password" required>
+                        <span class="justify-content-end"><i id="password-hide-icon" class="far fa-eye-slash" onclick="showHidePassword('#password', 'password')"></i></span>
+                        <span class="justify-content-end"><i id="password-show-icon" class="far fa-eye"  onclick="showHidePassword('#password', 'password')" style="display: none;"></i></span>
+                    </div>
+                    <div class="row">
+                        <p class="ps-0 ms-0">Forgot password? <a href="#">Reset Password</a></p>
+                    </div>
+
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <div class="row mb-2">
+                        <Button id="login-btn" class="btn btn-sm auth-btn">LOGIN</Button>
+                    </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4"></div>
+    </div>
+    <div class="loading-spinner-overlay" id="loading-spinner" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+      </svg>
+</body>
+<!-- Bootstrap -->
+<script src="{% static 'vendors/bootstrap-5.0.2/js/bootstrap.bundle.min.js' %}"></script>
+<!-- jQuery -->
+<script src="{% static 'vendors/jquery-3.5.1/dist/jquery.js' %}"></script>
+<!-- Popper -->
+<script src="{% static 'vendors/popper/popper.min.js' %}"></script>
+<script src="{% static 'customs/authentication/js/master.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $LOGIN_ALERT.hide();
+    })
+    var BASE_URL = "http://127.0.0.1:8000/";
+    
+    var $USERNAME = $("#username");
+    var $PASSWORD = $("#password");
+    var $LOGIN_BTN = $("#login-btn");
+    var $LOGIN_ALERT = $("#login-alert");
+    var $SPINNER = $("#loading-spinner");
+
+    // $PASSWORD.keyup(function (event) {
+    //     if (event.keyCode === 13) {
+    //         $LOGIN_BTN.click();
+    //     }        
+    // })
+
+    $LOGIN_BTN.click(function () {
+        $SPINNER.show();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        $.ajax({
+            type: 'GET',
+            url: '{% url "authentication:api-fetch-username" %}',
+            data: {
+                'username': username,
+            },
+            success: function (data) {
+                console.log('# ---- Fetch username success ---- #');
+                if (data.username) {
+                    var fetched_username = data.username;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "authentication:token_obtain_pair" %}',
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        data: {
+                            'username': fetched_username,
+                            'password': password
+                        },
+                        success: function (data) {
+                            $SPINNER.hide();
+                            console.log('# ---- Authorization success ---- #');
+                            if (data.access) {
+                                if (!localStorage.getItem('access')) {
+                                    localStorage.setItem('access', data.access);
+                                } else {
+                                    localStorage.removeItem('access');
+                                    localStorage.setItem('access', data.access);
+                                }
+                            }
+
+                            if (data.refresh) {
+                                if (!localStorage.getItem('refresh')) {
+                                    localStorage.setItem('refresh', data.refresh);
+                                } else {
+                                    localStorage.removeItem('refresh');
+                                    localStorage.setItem('refresh', data.refresh);
+                                }
+                            }
+                            window.location.replace(BASE_URL + 'manage-vocabulary/vocabulary-list/');
+                        },
+                        error: function (error) {
+                            console.log('# ---- Authorization error ---- #');
+                            $SPINNER.hide();
+                            if (error.status == 401) {
+                                $LOGIN_ALERT.addClass("alert alert-danger");
+                                $LOGIN_ALERT.append('<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>');
+                                $LOGIN_ALERT.append(`<span>Username or password does not match.</span>`);
+                                $LOGIN_ALERT.show(); 
+                            }
+                        }
+                    })
+                }                
+            },
+            error: function (error) {
+                console.log('# ---- Fetch username error ---- #');
+            }
+        })
+    })
+
+    
+</script>
+</html>

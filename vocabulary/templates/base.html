@@ -1,0 +1,56 @@
+{% load static %}
+<html lang="en">
+<head>
+    {% block head %}
+        {% block meta %}
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock meta %}
+    
+        <title>Brian's Vocabulary | {% block title %} {% endblock title %}</title>
+        <link rel="shortcut icon" type="image/png" href="#"/>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{% static 'vendors/bootstrap-5.0.2/css/bootstrap.min.css' %}">
+            <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+            <link rel="stylesheet" href="{% static 'vendors/fontawesome-6.0.0/css/all.css' %}">
+            <link rel="stylesheet" href="{% static 'vendors/fontawesome-6.0.0/css/fontawesome.min.css' %}">
+            
+        {% endblock stylesheets %}
+        <!-- Custom Theme Style -->
+        <link href="{% static 'customs/css/master.css' %}" rel="stylesheet">
+    {% endblock head %}
+</head>
+<body>
+    {% block body %}
+        {% block sidebar %}
+        <div>
+            
+        </div>
+                {% include 'sidebar.html' %}
+        {% endblock sidebar %}
+
+        {% block navigationbar %}
+            {% include 'top_navigationbar.html' %}
+        {% endblock navigationbar %}
+
+        {% block content %}
+        {% endblock content %}
+
+        {% block footer %}
+            {% include 'footer.html' %}
+        {% endblock footer%}
+         
+        {% block javascripts %}
+        <!-- Bootstrap -->
+        <script src="{% static 'vendors/bootstrap-5.0.2/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- jQuery -->
+        <script src="{% static 'vendors/jquery-3.5.1/dist/jquery.js' %}"></script>
+        <!-- Popper -->
+        <script src="{% static 'vendors/popper/popper.min.js' %}"></script>
+        {% endblock javascripts %}
+        <script src="{% static 'customs/js/master.js' %}"></script>
+    {% endblock body %}
+</body>
+</html>

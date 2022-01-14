@@ -1,0 +1,20 @@
+{% load static %}
+<div class="top-navigation">
+    <div class="nav sidebar-toggle">
+        <i class='bx bx-menu' id="sidebar-menu-btn"></i>
+    </div>
+    <nav class="nav navbar-nav">
+        <ul class="navbar-right">
+            <li class="nav-item dropdown">
+                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span id="username"></span>
+                    <img class="img-responsive avatar-view ms-4" id="profile-photo" src="" alt="">
+                </a>
+                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#"><i class="far fa-user-circle me-1"></i>Profile</a>
+                    <a class="dropdown-item" href="#" onclick="logout()"><i class="fa fa-sign-out me-1"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>

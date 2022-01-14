@@ -1,0 +1,40 @@
+{% load static %}
+<div class="sidebar" id="sidebar-menu">
+    <div class="logo-content pb-1">
+        <div class="logo">
+            <!-- <i class='bx bxl-quora'></i> -->
+            <!-- <img class="company-logo" src="{% static 'images/logo.jpg' %}" alt=""> -->
+            <div class="logo-name ms-3">Brian's Dictionary</div>
+        </div>
+        
+    </div>
+    
+    <div class="menu-section">
+        <ul>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-dashboard'></i>Dashboard
+                    <!-- <span class="sidebar-tooltip">Dashboard</span> -->
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="{% url 'manage_vocabulary:vocabulary-list'%}">
+                    <i class='bx bx-list-plus'></i>Word List
+                    <!-- <span class="sidebar-tooltip">Dashboard</span> -->
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+        <ul class="nav-list">
+            <li>
+                <button class="btn btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>Logout
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>

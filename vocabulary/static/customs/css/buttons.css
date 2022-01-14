@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+:root {
+    --sidebar-width: 240px;
+    --sidebar-sm-width: 80px;
+    --nav-width: 68px;
+    --first-color: #4723D9;
+    --first-color-light: #AFA5D9;
+    --white-color: #F7F6FB;
+    --body-font: 'Nunito', sans-serif;
+    --normal-font-size: 1rem;
+    --z-fixed: 100;
+    --primary-color: #006CB0;
+    --info-color: #1090E0;
+    --success-color: #00BEA0;
+    --danger-color: #FF3D27;
+    --default-color: #E0E0E0;
+    --light-color: #FCFCFC;
+    --second-light-color: #EFF2F5;
+    --warning-color: #FFBF00;
+    --content-background-color: #FAFCFF;
+    --text-color: #003252;
+}
+
+.auth-btn {
+    color: white;
+    background-color: var(--primary-color);
+    margin-left: 1px;
+}
+
+.auth-btn:hover {
+    color: white;
+    background-color: var(--primary-color);
+    margin-left: 1px;
+}
+
+.btn-add {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.btn-add:hover {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.btn-add:active {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.btn-shadow {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}

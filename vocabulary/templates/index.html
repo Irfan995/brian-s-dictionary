@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap-5.0.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css}">
+    <link rel="stylesheet" href="{% static 'customs/css/master.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="sidebar" id="sidebar-menu">
+        <div class="logo-content pb-1">
+            <div class="logo">
+                <!-- <i class='bx bxl-quora'></i> -->
+                <img class="company-logo" src="{% static 'images/logo.jpg' %}" alt="">
+                <div class="logo-name">Bryans</div>
+            </div>
+            
+        </div>
+        
+        <div class="menu-section">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>Dashboard
+                        <!-- <span class="sidebar-tooltip">Dashboard</span> -->
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="menu-section">
+            <h3>Management</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-users"></i>Students
+                        <!-- <span class="sidebar-tooltip">Students</span> -->
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-user-plus"></i>Enrollment
+                        <!-- <span class="sidebar-tooltip">Enrollment</span> -->
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-user-shield"></i>Personnel
+                        <!-- <span class="sidebar-tooltip">Personnel</span> -->
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-envelope"></i>Email
+                        <!-- <span class="sidebar-tooltip">Email</span> -->
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="menu-section">
+            <h3>Settings</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-user-cog"></i>User Role
+                        <!-- <span class="sidebar-tooltip">User Role</span> -->
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <ul class="nav-list">
+                <li>
+                    <a href="">
+                        <i class="fas fa-sign-out-alt"></i>Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Navigation bar -->
+    <div class="top-navigation">
+        <div class="nav sidebar-toggle">
+            <i class='bx bx-menu' id="sidebar-menu-btn"></i>
+        </div>
+        <nav class="nav navbar-nav">
+            <ul class="navbar-right">
+                <li class="nav-item">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                        User Name
+                        <img class="img-responsive avatar-view ms-4" src="{% static 'images/logo.jpg' %}" alt="">
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="">Profile</a>
+                        <a class="dropdown-item"  href="#"><i class="fa fa-sign-out pull-right"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-margin">
+                <div class="content-title">
+                    <h5>Dashboard</h5>
+                </div>
+                <div class="content-body">
+                    <div class="content">
+                        <h6>Page main body</h6>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="pull-right">
+            Copyright © 2021 QA Tek Solutions Inc. | Powered by QA Tek Solutions Inc.
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    
+    <script src="{% static 'vendors/bootstrap-5.0.2/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- jQuery -->
+    <script src="{% static 'vendors/jquery-3.5.1/dist/jquery.js' %}"></script>
+    <!-- Popper -->
+    <script src="{% static 'vendors/popper/popper.min.js' %}"></script>
+    <script>
+        // $(".sidebar ul li").click(function() {
+        //     $(this).addClass("active").siblings().removeClass("active")
+        // })
+        var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
+                            $BODY = $('body'),
+                            $MENU_TOGGLE = $('#sidebar-menu-btn'),
+                            $SIDEBAR = $('#sidebar-menu'),
+                            $MAIN_CONTENT = $('.main-content'),
+                            $TOP_NAVIGATION = $('.top-navigation'),
+                            $FOOTER = $('footer');
+        
+        function setContentHeight() {
+            // reset height
+            $MAIN_CONTENT.css('min-height', $(window).height());
+
+            var bodyHeight = $BODY.outerHeight(),
+                footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+                sidebarHeight = $SIDEBAR.height(),
+                contentHeight = bodyHeight < sidebarHeight ? sidebarHeight : bodyHeight;
+
+            // normalize content
+            contentHeight -= $TOP_NAVIGATION.height() + footerHeight;
+            console.log(contentHeight);
+            $MAIN_CONTENT.css('min-height', contentHeight);
+        };
+
+        function closeMenu() {
+            $SIDEBAR.find('li').removeClass('active');
+            $SIDEBAR.find('li ul').slideUp();
+            $SIDEBAR.find('li span').removeClass('rotate');
+        }
+
+        $SIDEBAR.find('a').click(function() {
+            var $li = $(this).parent();
+
+            if ($li.is('.active')) {
+                $li.removeClass('active');
+                $('ul:first', $li).slideUp(function() {
+                    setContentHeight();
+                });
+                $li.find('span').removeClass('rotate');
+            } else {
+                if (!$li.parent().is('.sub-menu')) {
+                    closeMenu();
+                }
+                $li.addClass('active');
+                $('ul:first', $li).slideDown(function () {
+                    setContentHeight();
+                });
+                if ($li.has('.sub-menu')) {
+                    $li.find('span').addClass('rotate');
+                }
+            }
+        })
+
+        // toggle small or large menu
+        $MENU_TOGGLE.click(function () {
+            if ($SIDEBAR.hasClass('sidebar')) {
+                $SIDEBAR.addClass('sidebar-sm').removeClass('sidebar');
+                // $SIDEBAR.find('sidebar').hide();
+                // $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+            } else {
+                $SIDEBAR.addClass('sidebar').removeClass('sidebar-sm')
+                // $SIDEBAR.find('li.active-sm ul').show();
+                // $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+            }
+
+            // $BODY.toggleClass('nav-md nav-sm');
+
+            setContentHeight();
+
+            $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+        });
+
+    </script>
+</body>

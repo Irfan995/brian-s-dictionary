@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Vocabulary List {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'customs/css/buttons.css' %}">
+{% endblock stylesheets %}
+
+
+{% block content %}
+<div class="main-content">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-margin">
+            <div class="content-title">
+                <h5>Word List
+                  <button id="add-word" style="float: right;" class="btn btn-sm btn-add btn-shadow" data-bs-toggle="modal" data-bs-target="#add-word-modal"><i class="fas fa-plus me-1"></i>Add Word</button>
+                </h5>
+            </div>
+            <div class="content-body">
+                <div class="content">
+                    <table id="word-list-table" class="table table-sm table-hover" cellspacing="0" width="100%"></table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Add Word -->
+<div class="modal fade" id="add-word-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Word</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Word</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="word">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Description</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <textarea name="" id="description" cols="30" rows="3" class="form-control form-control-sm"></textarea>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Usage</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="usage">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button id="submit-add-word" type="button" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Word -->
+<div class="modal fade" id="delete-word-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Word</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure to delete <strong id="confirm-delete-word"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button id="delete-word-btn" type="button" class="btn btn-danger btn-sm">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Word -->
+<div class="modal fade" id="update-word-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Word</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Word</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="word-u">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Description</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <textarea name="" id="description-u" cols="30" rows="3" class="form-control form-control-sm"></textarea>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Usage</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="usage-u">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="update-word-btn" type="button" class="btn btn-info">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <!-- Datatables -->
+  <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+  <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+
+  <script>
+
+      $(document).ready(function () {
+          var token = {
+              "Authorization": "Bearer " + localStorage.getItem('access'),
+              'Accept': 'application/json'
+            };
+            console.log(token);
+          wordListDataTableInit("#word-list-table",  "{% url 'manage_vocabulary:word-list' %}", getColumnDefinition(), [[0, "asc"]], null)
+      })
+
+      // $("#add-word").click(function () {
+      //   $("#add-word-modal").modal("show");
+      // })
+      // Initialize employee list datatable
+    function wordListDataTableInit(tableIdOrCss, url, columns, sortArr, pageLength) {
+      var param = {
+        "responsive": false,
+        "columnDefs": [
+          { 'targets': [0, 1, 2, 3], 'createdCell': createdWordCell},
+        ],
+        "aLengthMenu": [[10, 20, 50, -1], [10, 20, 50, 'All']],
+        "pageLength": pageLength || 10,
+        "iDisplayLength": pageLength || 10,
+        //"language": { search: "" },
+        "sPaginationType": "simple_numbers", // you can also give here 'simple','simple_numbers','full','full_numbers'
+        "oLanguage": {
+          "sSearch": "Search:",
+          "sProcessing": "Loading..."
+        },
+        "ajax": $.fn.dataTable.pipeline({
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem('access'),
+            },
+          url: url,
+          data: {
+              
+          },
+          pages: 5, // number of pages to cache
+          
+        }),
+        "processing": true,
+        "serverSide": true,
+        "searching": true,
+        // "fnDrawCallback":function(){
+        //   if(typeof callBack == 'function'){
+        //     callBack();
+        //   }
+        // },
+        "destroy": true,
+        "serverSide": true,
+        "aoColumns": columns,
+        "aaSorting": sortArr, //[[ 0, "asc" ],[ 1, "desc" ]] // Sort by first column descending
+        "createdRow": function( row, data, dataIndex ) {
+          $(row).attr('id', 'word-'+data.id);
+        }
+      };
+
+      var table = $(tableIdOrCss).DataTable(param);
+      return table;
+    }
+
+    function getColumnDefinition() {
+      return [
+        {"sTitle": "ID", "mData": "id", "bSortable": true},
+        {"sTitle": "Word", "mData": "word", "bSortable": true},
+        {"sTitle": "Description", "mData": "description", "bSortable": true},
+        {"sTitle": "Usage", "mData": "usage", "bSortable": true},
+        {
+          "sTitle": "Actions", "mData": null, "bSortable": false, "render": function (data) {
+            var actionHtml = `
+            
+            <a href="#" data-toggle="tooltip" data-placement="top" title="Edit" onClick="openWordUpdateModal(${data.id})"><i class="fas fa-edit fa-lg" aria-hidden="true"></i></a>
+            <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onClick="openWordDeleteModal(${data.id}, '${data.word}')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>`;
+            return actionHtml;
+          }
+        }
+      ];
+    }
+
+    // Create word td callback function
+    function createdWordCell(cell, cellData, rowData, rowIndex, colIndex, data) {
+      if (colIndex==0) { // Holiday name
+        $(cell).attr('id', 'id-'+rowData.id);
+      }
+      else if (colIndex==1) {  // Holiday Date
+        $(cell).attr('id', 'string-'+rowData.id);
+      }
+      else if (colIndex==2) {  // Holiday day
+        $(cell).attr('id', 'description-'+rowData.id);
+      }
+      else if (colIndex==3) {  // Holiday type
+        $(cell).attr('id', 'usage-'+rowData.id);
+      }
+    }
+
+    $("#submit-add-word").click(function () {
+        var word = $("#word").val();
+        var description = $("#description").val();
+        var usage = $("#usage").val();
+
+        $.ajax({
+          type: 'POST',
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem('access')
+          },
+          url: '{% url "manage_vocabulary:word-list" %}',
+          data: {
+            'word': word,
+            'description': description,
+            'usage': usage,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          dataType: 'json',
+          success: function (data, response) {
+            console.log(response);
+            $("#add-word-modal").modal('toggle');
+            // wordListDataTableInit("#word-list-table","{% url 'manage_vocabulary:word-list' %}", getColumnDefinition(), [[0, "asc"]], null)
+          }
+        })
+    })
+
+    function openWordUpdateModal(id) {
+        $("#update-word-modal").modal('show');
+
+        $.ajax({
+          type: 'GET',
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem('access')
+          },
+          url: '{% url "manage_vocabulary:word-information" %}',
+          data: {
+            'id': id,
+          },
+          dataType: 'json',
+          success: function (data) {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+              $("#word-u").val(data[i].string);
+              $("#description-u").val(data[i].description);
+              $("#usage-u").val(data[i].usage);
+            }
+          }
+        })
+
+        $("#update-word-btn").click(function () {
+        var word = $("#word-u").val();
+        var description = $("#description-u").val();
+        var usage = $("#usage-u").val();
+
+        $.ajax({
+          type: 'PUT',
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem('access')
+          },
+          url: '{% url "manage_vocabulary:word-list" %}',
+          data: {
+            'word_id': id,
+            'string': word,
+            'description': description,
+            'usage': usage
+          },
+          dataType: 'json',
+          success: function (data) {
+            for (let i = 0; i < data.length; i++) {
+              $("#id-" + id).text(data[i].id);
+              $("#string-" + id).text(data[i].string);
+              $("#description-" + id).text(data[i].description);
+              $("#usage-" + id).text(data[i].usage);
+            }
+            $("#update-word-modal").modal('toggle');
+          }
+        })
+      })
+    }
+
+    function openWordDeleteModal(id, word) {
+      $("#confirm-delete-word").text(word);
+      $("#delete-word-modal").modal('show');
+      $("#delete-word-btn").click(function () {
+        $.ajax({
+          type: 'DELETE',
+          headers: {
+              "Authorization": "Bearer " + localStorage.getItem('access')
+            },
+          url: '{% url "manage_vocabulary:word-list" %}',
+          data: {
+            'word_id': id,
+          },
+          dataType: 'json',
+          success: function (data, response) {
+            if (data.deleted) {
+              $("#delete-word-modal").modal('toggle');
+              $("#word-list-table #word-" + id).remove();
+            }
+          } 
+        })
+      })
+    }
+
+    // Pipelining function for DataTables. To be used to the `ajax` option of DataTables
+    $.fn.dataTable.pipeline = function ( opts ) {
+        // Configuration options
+        var conf = $.extend( {
+            pages: 5,     // number of pages to cache
+            url: '', 
+            headers: null,     // script url
+            data: null,   // function or object with parameters to send to the server
+                          // matching how `ajax.data` works in DataTables
+            method: 'GET' // Ajax HTTP method
+        }, opts );
+
+        // Private variables for storing the cache
+        var cacheLower = -1;
+        var cacheUpper = null;
+        var cacheLastRequest = null;
+        var cacheLastJson = null;
+
+        return function ( request, drawCallback, settings ) {
+            var ajax          = false;
+            var requestStart  = request.start;
+            var drawStart     = request.start;
+            var requestLength = request.length;
+            var requestEnd    = requestStart + requestLength;
+
+            if ( settings.clearCache ) {
+                // API requested that the cache be cleared
+                ajax = true;
+                settings.clearCache = false;
+            }
+            else if ( cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper ) {
+                // outside cached data - need to make a request
+                ajax = true;
+            }
+            else if ( JSON.stringify( request.order )   !== JSON.stringify( cacheLastRequest.order ) ||
+                      JSON.stringify( request.columns ) !== JSON.stringify( cacheLastRequest.columns ) ||
+                      JSON.stringify( request.search )  !== JSON.stringify( cacheLastRequest.search )
+            ) {
+                // properties changed (ordering, columns, searching)
+                ajax = true;
+            }
+
+            // Store the request for checking next time around
+            cacheLastRequest = $.extend( true, {}, request );
+
+            if ( ajax ) {
+                // Need data from the server
+                if ( requestStart < cacheLower ) {
+                    requestStart = requestStart - (requestLength*(conf.pages-1));
+
+                    if ( requestStart < 0 ) {
+                        requestStart = 0;
+                    }
+                }
+
+                cacheLower = requestStart;
+                cacheUpper = requestStart + (requestLength * conf.pages);
+
+                request.start = requestStart;
+                request.length = requestLength*conf.pages;
+
+                // Provide the same `data` options as DataTables.
+                if ( typeof conf.data === 'function' ) {
+                    // As a function it is executed with the data object as an arg
+                    // for manipulation. If an object is returned, it is used as the
+                    // data object to submit
+                    var d = conf.data( request );
+                    if ( d ) {
+                        $.extend( request, d );
+                    }
+                }
+                else if ( $.isPlainObject( conf.data ) ) {
+                    // As an object, the data given extends the default
+                    $.extend( request, conf.data );
+                }
+
+                return $.ajax( {
+                    "type":     conf.method,
+                    "headers": conf.headers,
+                    "url":      conf.url,
+                    "data":     request,
+                    "dataType": "json",
+                    "cache":    false,
+                    "success":  function ( json ) {
+                        cacheLastJson = $.extend(true, {}, json);
+
+                        if ( cacheLower != drawStart ) {
+                            json.data.splice( 0, drawStart-cacheLower );
+                        }
+                        if ( requestLength >= -1 ) {
+                            json.data.splice( requestLength, json.data.length );
+                        }
+
+                        drawCallback( json );
+                    }
+                } );
+            }
+            else {
+                json = $.extend( true, {}, cacheLastJson );
+                json.draw = request.draw; // Update the echo for each response
+                json.data.splice( 0, requestStart-cacheLower );
+                json.data.splice( requestLength, json.data.length );
+
+                drawCallback(json);
+            }
+        }
+    }
+
+    // Register an API method that will empty the pipelined data, forcing an Ajax
+    // fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+    $.fn.dataTable.Api.register( 'clearPipeline()', function () {
+        return this.iterator( 'table', function ( settings ) {
+            settings.clearCache = true;
+        } );
+    } );
+
+  </script>
+{% endblock javascripts %}
