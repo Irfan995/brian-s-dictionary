@@ -26,7 +26,7 @@
 
 })(jQuery,'smartresize');
 
-var BASE_URL = 'http://157.230.209.47:8000/'
+var BASE_URL = 'http://157.230.209.47/'
 
 function initSidebar() {
     var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
