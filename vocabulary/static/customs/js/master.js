@@ -26,7 +26,7 @@
 
 })(jQuery,'smartresize');
 
-var BASE_URL = 'http://addwordstoenglish.com/'
+var BASE_URL = 'https://addwordstoenglish.com/'
 
 function initSidebar() {
     var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
