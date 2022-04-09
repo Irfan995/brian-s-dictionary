@@ -61,6 +61,12 @@
             <input class="form-control form-control-sm" type="text" name="" id="usage">
           </div>
         </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Creator</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="creator">
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -116,6 +122,12 @@
           <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Usage</label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <input class="form-control form-control-sm" type="text" name="" id="usage-u">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label class="col-md-4 col-sm-4 col-xs-12 label-align me-2 mt-1">Creator</label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <input class="form-control form-control-sm" type="text" name="" id="creator-u">
           </div>
         </div>
       </div>
@@ -214,6 +226,7 @@
         {"sTitle": "Word", "mData": "word", "bSortable": true},
         {"sTitle": "Description", "mData": "description", "bSortable": true},
         {"sTitle": "Usage", "mData": "usage", "bSortable": true},
+        {"sTitle": "Creator", "mData": "creator", "bSortable": true},
         {
           "sTitle": "Actions", "mData": null, "bSortable": false, "render": function (data) {
             var actionHtml = `
@@ -240,30 +253,34 @@
       else if (colIndex==3) {  // Holiday type
         $(cell).attr('id', 'usage-'+rowData.id);
       }
+      else if (colIndex==4) {  // Holiday type
+        $(cell).attr('id', 'creator-'+rowData.id);
+      }
     }
 
     $("#submit-add-word").click(function () {
         var word = $("#word").val();
         var description = $("#description").val();
         var usage = $("#usage").val();
-
+        var creator = $("#creator").val();
         $.ajax({
           type: 'POST',
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem('access')
-          },
+          // headers: {
+          //   "Authorization": "Bearer " + localStorage.getItem('access')
+          // },
           url: '{% url "manage_vocabulary:word-list" %}',
           data: {
             'word': word,
             'description': description,
             'usage': usage,
+            'creator': creator,
             'csrfmiddlewaretoken': '{{ csrf_token }}',
           },
           dataType: 'json',
           success: function (data, response) {
             console.log(response);
             $("#add-word-modal").modal('toggle');
-            // wordListDataTableInit("#word-list-table","{% url 'manage_vocabulary:word-list' %}", getColumnDefinition(), [[0, "asc"]], null)
+            wordListDataTableInit("#word-list-table","{% url 'manage_vocabulary:word-list' %}", getColumnDefinition(), [[0, "asc"]], null)
           }
         })
     })
@@ -273,9 +290,9 @@
 
         $.ajax({
           type: 'GET',
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem('access')
-          },
+          // headers: {
+          //   "Authorization": "Bearer " + localStorage.getItem('access')
+          // },
           url: '{% url "manage_vocabulary:word-information" %}',
           data: {
             'id': id,
@@ -287,6 +304,7 @@
               $("#word-u").val(data[i].string);
               $("#description-u").val(data[i].description);
               $("#usage-u").val(data[i].usage);
+              $("creator-u").val(data[i].creator);
             }
           }
         })
@@ -295,18 +313,21 @@
         var word = $("#word-u").val();
         var description = $("#description-u").val();
         var usage = $("#usage-u").val();
-
+        var creator = $("#creator-u").val();
+        console.log(creator);
         $.ajax({
           type: 'PUT',
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem('access')
-          },
+          // headers: {
+          //   "Authorization": "Bearer " + localStorage.getItem('access')
+          // },
           url: '{% url "manage_vocabulary:word-list" %}',
           data: {
             'word_id': id,
             'string': word,
             'description': description,
-            'usage': usage
+            'usage': usage,
+            'creator': creator,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
           },
           dataType: 'json',
           success: function (data) {
@@ -315,6 +336,7 @@
               $("#string-" + id).text(data[i].string);
               $("#description-" + id).text(data[i].description);
               $("#usage-" + id).text(data[i].usage);
+              $("#creator-" + id).text(data[i].creator);
             }
             $("#update-word-modal").modal('toggle');
           }
@@ -329,9 +351,9 @@
         $.ajax({
           type: 'DELETE',
           headers: {
-              "Authorization": "Bearer " + localStorage.getItem('access')
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
-          url: '{% url "manage_vocabulary:word-list" %}',
+          url: '{% url "manage_vocabulary:word-delete" %}',
           data: {
             'word_id': id,
           },
@@ -352,7 +374,7 @@
         var conf = $.extend( {
             pages: 5,     // number of pages to cache
             url: '', 
-            headers: null,     // script url
+            // headers: null,     // script url
             data: null,   // function or object with parameters to send to the server
                           // matching how `ajax.data` works in DataTables
             method: 'GET' // Ajax HTTP method

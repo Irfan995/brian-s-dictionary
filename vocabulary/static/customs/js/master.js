@@ -146,7 +146,12 @@ function logout() {
     window.location.replace(BASE_URL + 'auth/login/');
 }
 
+function initTopNavigationBar() {
+    $("#profile-photo").attr('src', BASE_URL + 'static/images/image-2.jpg/')
+}
+
 $(document).ready(function () {
     initSidebar();
-    fetchUser();
+    // fetchUser();
+    initTopNavigationBar()
 })

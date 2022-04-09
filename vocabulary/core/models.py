@@ -9,7 +9,7 @@ class Word(models.Model):
     description = models.CharField(max_length=256, null=True, blank=True)
     usage = models.CharField(max_length=256, null=True, blank=True)
     created_at = models.DateField(default=timezone.now)
-    creater = models.ForeignKey(User, related_name="word", on_delete=models.CASCADE, null=True, blank=True)
+    creator = models.CharField(max_length=1024, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.string

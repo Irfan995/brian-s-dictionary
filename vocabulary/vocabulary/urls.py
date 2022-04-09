@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from .views import *
+from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('', AuthenticateView.as_view(), name='authenticate'),
+    path('', RedirectView.as_view(url='manage-vocabulary/vocabulary-list/', permanent=False)),
     path('admin/', admin.site.urls),
     path('index/', IndexView.as_view(), name='index'),
 
