@@ -92,17 +92,21 @@ class WordList(APIView):
         description = request.POST.get('description')
         usage = request.POST.get('usage')
         creator = request.POST.get('creator')
+        
+        word = word.strip()
+        if not Word.objects.filter(string=word).exists():
+            new_word = Word.objects.create(
+                string=word.strip(),
+                description=description,
+                usage=usage,
+                creator=creator
+            )
 
-        new_word = Word.objects.create(
-            string=word,
-            description=description,
-            usage=usage,
-            creator=creator
-        )
-
-        new_word = Word.objects.filter(id=new_word.id)
-        serializer = WordSerializer(new_word)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            new_word = Word.objects.filter(id=new_word.id)
+            serializer = WordSerializer(new_word)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_409_CONFLICT)
 
     # def delete(self, request):
     #     user = self.request.user
